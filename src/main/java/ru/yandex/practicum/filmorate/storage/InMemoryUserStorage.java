@@ -22,7 +22,7 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User createUser(User user) {
-        user.setId(createNewId());
+        user.setId(++idCreator);
         users.put(user.getId(), user);
         log.debug("Пользователь с логином {} успешно добавлен", user.getLogin());
         return user;
@@ -37,9 +37,5 @@ public class InMemoryUserStorage implements UserStorage {
         users.put(user.getId(), user);
         log.debug("Пользователь с логином {} успешно обновлен", user.getLogin());
         return user;
-    }
-
-    private int createNewId() {
-        return ++idCreator;
     }
 }

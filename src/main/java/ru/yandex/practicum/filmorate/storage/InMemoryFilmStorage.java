@@ -22,7 +22,7 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film createFilm(Film film) {
-        film.setId(createNewId());
+        film.setId(++idCreator);
         films.put(film.getId(), film);
         log.debug("Фильм с названием {} успешно дообавлен", film.getName());
         return film;
@@ -37,9 +37,5 @@ public class InMemoryFilmStorage implements FilmStorage {
         films.put(film.getId(), film);
         log.debug("Фильм с названием {} успешно обновлен", film.getName());
         return film;
-    }
-
-    private int createNewId() {
-        return ++idCreator;
     }
 }
