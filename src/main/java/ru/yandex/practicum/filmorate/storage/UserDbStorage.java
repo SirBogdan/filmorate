@@ -43,7 +43,6 @@ public class UserDbStorage implements UserStorage{
     @Override
     public User createUser(User user) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        System.out.println(user);
         System.out.println(user.getName());
         jdbcTemplate.update(connection -> {
             PreparedStatement stmt = connection.prepareStatement(
