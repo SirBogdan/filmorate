@@ -26,6 +26,7 @@ public class UserService {
     }
 
     public Collection<User> findAll() {
+        System.out.println(userStorage.findAll());
         return userStorage.findAll();
     }
 
@@ -46,12 +47,14 @@ public class UserService {
     }
 
     public User findUserById(Long userId) {
-        return userStorage.findAll().stream()
+/*        return userStorage.findAll().stream()
                 .filter(u -> Objects.equals(u.getId(), userId))
                 .findFirst()
-                .orElseThrow(() -> new ObjectNotFoundException(String.format("Пользователь с id %d не найден", userId)));
+                .orElseThrow(() -> new ObjectNotFoundException(String.format("Пользователь с id %d не найден", userId)));*/
+        return userStorage.getUserById(userId);
     }
 
+    /*
     public void addFriend(Long userId, Long friendId) {
         User user = findUserById(userId);
         User friend = findUserById(friendId);
@@ -77,6 +80,7 @@ public class UserService {
     public Collection<User> getUserFriends(Long userId) {
         return findUserById(userId).getFriends().stream().map(this::findUserById).collect(Collectors.toList());
     }
+    */
 
     private boolean isUserValid(User user) {
         boolean validEmail = !user.getEmail().isBlank() && user.getEmail().contains("@") && user.getEmail() != null;
@@ -87,6 +91,4 @@ public class UserService {
         boolean validBirthday = user.getBirthday().isBefore(LocalDate.now());
         return validEmail && validLogin && validBirthday;
     }
-
-
 }

@@ -8,12 +8,17 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.Collection;
 import java.util.HashMap;
 
-@Component
+
 @Slf4j
 public class InMemoryUserStorage implements UserStorage {
 
     private final HashMap<Long, User> users = new HashMap<>();
     private int idCreator = 0;
+
+    @Override
+    public User getUserById(long id) {
+        return null;
+    }
 
     @Override
     public Collection<User> findAll() {
@@ -22,7 +27,7 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User createUser(User user) {
-        user.setId(++idCreator);
+        //user.setId(++idCreator);
         users.put(user.getId(), user);
         log.debug("Пользователь с логином {} успешно добавлен", user.getLogin());
         return user;
