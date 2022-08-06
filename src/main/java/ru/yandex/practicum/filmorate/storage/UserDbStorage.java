@@ -45,7 +45,6 @@ public class UserDbStorage implements UserStorage{
         KeyHolder keyHolder = new GeneratedKeyHolder();
         System.out.println(user);
         System.out.println(user.getName());
-        System.out.println(user.getId());
         jdbcTemplate.update(connection -> {
             PreparedStatement stmt = connection.prepareStatement(
                               "INSERT INTO users (email, login, user_name, birthday) values (?,?,?,?)",
