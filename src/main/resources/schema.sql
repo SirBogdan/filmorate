@@ -1,4 +1,4 @@
-create table FILMS
+create table if not exists FILMS
 (
     FILM_ID          INTEGER auto_increment,
     FILM_NAME        CHARACTER VARYING(100) not null,
