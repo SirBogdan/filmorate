@@ -41,7 +41,6 @@ public class UserController {
         return userService.findUserById(id);
     }
 
-    /*
     @PutMapping("/{id}/friends/{friendId}")
     public void addFriend(@PathVariable("id") Long id, @PathVariable("friendId") Long friendId) {
         userService.addFriend(id, friendId);
@@ -61,5 +60,5 @@ public class UserController {
     public Collection<User> findFriendsIntersection(@PathVariable("id") Long id, @PathVariable("otherId") Long otherId) {
         return userService.findFriendsIntersection(id, otherId);
     }
-    */
+
 }

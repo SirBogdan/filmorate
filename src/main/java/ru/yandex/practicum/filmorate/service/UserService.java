@@ -3,37 +3,32 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exceptions.ObjectNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.UserDbStorage;
+import ru.yandex.practicum.filmorate.storage.DAO.FriendsDbStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class UserService {
-    private final UserDbStorage userStorage; // Вот, забыл тут сделать
+    private final UserStorage userStorage;
+    private final FriendsDbStorage friendsDbStorage;
 
     @Autowired
-    public UserService(UserDbStorage userStorage) {
+    public UserService(UserStorage userStorage, FriendsDbStorage friendsDbStorage) {
         this.userStorage = userStorage;
+        this.friendsDbStorage = friendsDbStorage;
     }
 
     public Collection<User> findAll() {
-        System.out.println(userStorage.findAll());
         return userStorage.findAll();
     }
 
     public User createUser(User user) {
         if (!isUserValid(user)) {
-            log.debug("Ошибка валидации при создании пользователя");
             throw new ValidationException("Ошибка валидации при создании пользователя");
         }
         return userStorage.createUser(user);
@@ -41,47 +36,30 @@ public class UserService {
 
     public User putUser(User user) {
         if (!isUserValid(user)) {
-            log.debug("Ошибка валидации при обновлении пользователя");
             throw new ValidationException("Ошибка валидации при обновлении пользователя");
         }
         return userStorage.putUser(user);
     }
 
     public User findUserById(Long userId) {
-/*        return userStorage.findAll().stream()
-                .filter(u -> Objects.equals(u.getId(), userId))
-                .findFirst()
-                .orElseThrow(() -> new ObjectNotFoundException(String.format("Пользователь с id %d не найден", userId)));*/
         return userStorage.getUserById(userId);
     }
 
-    /*
     public void addFriend(Long userId, Long friendId) {
-        User user = findUserById(userId);
-        User friend = findUserById(friendId);
-        user.getFriends().add(friendId);
-        friend.getFriends().add(userId);
+        friendsDbStorage.addFriend(userId, friendId);
     }
 
     public void deleteFriend(Long userId, Long friendId) {
-        User user = findUserById(userId);
-        User friend = findUserById(friendId);
-        user.getFriends().remove(friendId);
-        friend.getFriends().remove(userId);
-    }
-
-    public Collection<User> findFriendsIntersection(Long userId, Long friendId) {
-        User user = findUserById(userId);
-        User friend = findUserById(friendId);
-        Set<Long> resultIds = new HashSet<>(user.getFriends());
-        resultIds.retainAll(friend.getFriends());
-        return resultIds.stream().map(this::findUserById).collect(Collectors.toList());
+        friendsDbStorage.deleteFriend(userId, friendId);
     }
 
     public Collection<User> getUserFriends(Long userId) {
-        return findUserById(userId).getFriends().stream().map(this::findUserById).collect(Collectors.toList());
+        return friendsDbStorage.getUserFriends(userId);
     }
-    */
+
+    public Collection<User> findFriendsIntersection(Long userId, Long friendId) {
+        return friendsDbStorage.findFriendsIntersection(userId, friendId);
+    }
 
     private boolean isUserValid(User user) {
         boolean validEmail = !user.getEmail().isBlank() && user.getEmail().contains("@") && user.getEmail() != null;
