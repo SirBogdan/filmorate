@@ -79,7 +79,8 @@ public class FilmDbStorage implements FilmStorage {
     public Film putFilm(Film film) {
         checkFilmExists(film.getId());
         jdbcTemplate.update("UPDATE FILMS " +
-                        "SET FILM_NAME = ?, FILM_DESCRIPTION = ?, RELEASE_DATE = ?, DURATION = ?, RATE = ?, MPA_ID = ? " +
+                        "SET FILM_NAME = ?, FILM_DESCRIPTION = ?, RELEASE_DATE = ?, " +
+                        "DURATION = ?, RATE = ?, MPA_ID = ? " +
                         "WHERE FILM_ID = ?",
                 film.getName(), film.getDescription(), film.getReleaseDate(),
                 film.getDuration(), film.getRate(), film.getMpa().getId(), film.getId());

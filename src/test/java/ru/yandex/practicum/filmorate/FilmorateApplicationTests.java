@@ -70,7 +70,8 @@ class FilmorateApplicationTests {
         friendsDbStorage.addFriend(1L, 3L);
         friendsDbStorage.addFriend(2L, 3L);
 
-        assertEquals(List.of(user3), friendsDbStorage.findFriendsIntersection(1L, 2L)); // тест метода findFriendsIntersection
+        // тест метода findFriendsIntersection
+        assertEquals(List.of(user3), friendsDbStorage.findFriendsIntersection(1L, 2L));
     }
 
     @Test
