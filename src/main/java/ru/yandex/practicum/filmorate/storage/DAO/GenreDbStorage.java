@@ -9,6 +9,7 @@ import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.storage.RowMappers.GenreRowMapper;
 
 import java.util.Collection;
+import java.util.List;
 
 @Repository
 @Qualifier
@@ -21,10 +22,11 @@ public class GenreDbStorage {
     }
 
     public Genre getGenreById(long id) {
-        if (id <= 0 || id > 6) {
+        List<Genre> genre = jdbcTemplate.query("SELECT * FROM GENRES WHERE GENRE_ID = ?", new GenreRowMapper(), id);
+        if (genre.size() == 0) {
             throw new ObjectNotFoundException("Ошибка: жанра с запрашиваемым id не существует");
         }
-        return jdbcTemplate.queryForObject("SELECT * FROM GENRES WHERE GENRE_ID = ?", new GenreRowMapper(), id);
+        return genre.get(0);
     }
 
     public Collection<Genre> getAllGenres() {
