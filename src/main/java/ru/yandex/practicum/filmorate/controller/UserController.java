@@ -27,6 +27,7 @@ public class UserController {
 
     @PostMapping
     public User createUser(@RequestBody User user) {
+        log.info("Получен пользователь {}", user);
         return userService.createUser(user);
     }
 
@@ -59,4 +60,5 @@ public class UserController {
     public Collection<User> findFriendsIntersection(@PathVariable("id") Long id, @PathVariable("otherId") Long otherId) {
         return userService.findFriendsIntersection(id, otherId);
     }
+
 }
